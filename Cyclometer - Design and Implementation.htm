@@ -1,0 +1,304 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+		<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+		<meta name="generator" content="Adobe GoLive">
+		<title>Cyclometer - Design and Implementation</title>
+		<link href="Cyclometer%20-%20Design%20and%20Implementation_files/basic.htm" rel="stylesheet" type="text/css" media="all">
+	</head>
+
+	<body bgcolor="#ffffff">
+	<center>
+    <h1>Modeling, Design and Implementation Project<br>Cyclometer</h1></center>
+<h3>Introduction</h3>
+	<p>Your team is responsible for modeling, designing and implementing a 
+cyclometer, also called a bicycle computer. Pictured below is a typical 
+cyclometer. For this project, you will design and implement a cyclometer
+ with the features listed below.</p>
+	<p align="center"><img src="Cyclometer%20-%20Design%20and%20Implementation_files/velo5.jpg" alt="" border="0" width="277" height="380"></p>
+	<h3>Cyclometer Features</h3>
+	<p>The cyclometer uses a magnetic sensor on one of the bicycle's wheels
+ to generate a pulse once per wheel revolution. These pulses are counted
+ to compute the current speed of the bicycle and several trip values 
+that can be reset to 0 at the start of each trip. This cyclometer 
+computes the following values:</p>
+	<ul>
+	  <li>Current speed        
+		</li><li>Trip values        
+		  <ul>
+		    <li>Average speed
+	        </li>
+		    <li>Distance                
+	        </li>
+		    <li>Elapsed time
+	        </li>
+        </ul>        
+    </li></ul>
+	<p>The cyclometer uses either kilometers or miles to compute speeds and
+ distances.  The cyclometer has automatic and manual starting modes. In 
+manual mode, the user manually turns the calculation of trip values on 
+and off. In automatic mode, the cyclometer computes trip values when the
+ bicycle is moving, i.e. the wheel is rotating.</p>
+	<p>The cyclometer displays numeric output of various quantities on a 4 
+digit 7-segment display. Three LEDs indicate wheel rotation, Auto 
+start/stop mode, and the measurement units in use. The cyclometer has 
+pushbutton inputs for: Mode, Start/Stop, and Set.</p>
+    <h3>Cyclometer Requirements and Functional Specifications</h3>
+    <p>The following is a list of requirements statements and functional
+ specifications for the cyclometer that you will implement. When a 
+distinction is made between the two, and there are arguments for the 
+benefits of that, the requirements statements state what the system is 
+required to do, but do not give any indication of implementation 
+details, particularly interface details. Timing details may be given in 
+the requirements, if those timing specifications must be met for correct
+ operation. The functional specification starts describing 
+implementation details particularly for the user interface, and 
+describing operating scenarios. In the section below, for the most part,
+ the top two levels (1., 2.B, etc.) are requirements statements, and the
+ third and fourth levels are functional specifications.</p>
+    <ol>
+	    <li>The cyclometer shall allow the user to fully reset the system.
+	      <ol type="A">
+	        <li>The cyclometer shall do a full reset when initially started, i.e. the cyclometer is powered on.
+	        Note: the cyclometer has no on/off feature. 
+	        </li><li>The cyclometer shall do a full reset  when all three pushbuttons are simultaneously depressed for at least 2 seconds.
+<ol type="i">
+	            <li> The cyclometer shall respond to a full reset request in all operating modes including configuration after reset.</li>
+            </ol>            
+	        </li><li>The cyclometer shall initialize its stored data and operations.
+	            <ol type="i">
+	              <li><span>The cyclometer shall enter Manual mode with trip calculations turned off.</span></li>
+	              <li>The cyclometer shall reset the trip values to 0. </li>
+              </ol>            
+            </li><li>The cyclometer shall allow the user to select miles or kilometers.
+	              <ol type="i">
+	                <li>The display shall initially show a 1 (three blanks displays and 1 in the rightmost display) to indicate kilometers.</li>
+	                <li>Pressing Mode once shall display a 2 to indicate miles.</li>
+	                <li>Repeated pressing of the Mode button shall toggle between kilometers and miles.</li>
+	                <li>The measurement unit is set by pressing the Set button.</li>
+              </ol>
+            </li>
+	        <li>The cyclometer shall allow the user to set the tire circumference.
+	          <ol type="i">
+	            <li>The display shall initially show 210 (leftmost display 
+blank) which represents the tire circumference in centimeters. Tire 
+circumference is always entered in centimeters.</li>
+	            <li>Pressing Mode increases the circumference by 1 cm up to a maximum of 220 cm.</li>
+	            <li>Pressing Mode when the maximum circumference is displayed shall display the minimum circumference of 190 cm.</li>
+	            <li>If Mode is held down continuously for 2 seconds, the 
+circumference shall increase  at a rate of 1cm/sec. The circumference 
+shall wrap to the minimum circumference if the user continues to depress
+ Mode when the maximum circumference is reached. The circumference shall
+ stop changing and remain at the circumference currently displayed when 
+the user releases the Mode button.</li>
+	            <li>The tire circumference shall be stored by pressing the Set button.</li>
+              </ol>
+            </li>
+	        <li>The cyclometer shall perform the full reset operations in the order: 1.C, 1.D, 1.E.</li>
+	        <li>After setting of the tire circumference, the cyclometer 
+shall display current speed and average speed as specified in 3.C.i, and
+ begin performing current speed calculation and display.</li>
+          </ol>
+        </li>
+	    <li>The cyclometer shall calculate the current speed, and the trip values-average speed, distance, and elapsed time.
+	      <ol type="A">
+      <li>The cyclometer shall allow the user to modify the tire circumference after cyclometer initialization.
+        <ol type="i">
+          <li>The cyclometer shall allow setting of the wheel 
+circumference when the user presses the Set button while the display 
+shows the distance.</li>
+          <li>After pressing the Set button, the display shall initially show the current wheel circumference.</li>
+          <li>Adjustment of the wheel circumference shall be as described in 1.E.</li>
+          <li>The cyclometer shall store the new wheel circumference 
+when the user presses the Set button. The display shall show the 
+distance after setting the wheel circumference.</li>
+          <li>The cyclometer shall continue performing trip calculations
+ while the user adjusts the wheel circumference. The cyclometer shall 
+use the previously set circumference until a new circumference is 
+stored. Previous distance and average speed calculations shall remain as
+ computed when a new wheel circumference is entered.  Calculations shall
+ begin using the new wheel circumference after it is set and accumulate 
+on the values computed using the old wheel circumference.</li>
+          <li>The cyclometer shall continue displaying wheel rotations while setting a new wheel circumference.</li>
+        </ol>
+      </li>
+      <li>The cyclometer shall allow the user to manually and automatically start and stop the calculations.
+        <ol type="i">
+          <li>The cyclometer shall toggle between Manual and Auto mode 
+each time the user presses the Set button while the display shows 
+elapsed time or speed.</li>
+          <li> In Manual mode, the Start/Stop button controls when trip 
+calculations are performed. Pressing the Start/Stop button toggles 
+calculation on and off.</li>
+          <li>In Auto mode, the cyclometer shall perform trip calculations only when it detects wheel rotation. <span>In Manual mode, the cyclometer shall perform trip calculations when trip calculations are turned on.</span></li>
+          <li>In Auto mode, the cyclometer shall light the Auto LED  steady on when trip calculations are <span>not being performed</span>. <span>In Manual mode, the cyclometer shall turn the Auto LED off when trip calculations are turned off.</span></li>
+          <li>The cyclometer shall blink the Auto LED when  performing trip calculations in <span>either</span> Auto <span>or Manual</span> mode. The Auto LED shall blink with a 1Hz rate (0.5 second on, 0.5 second off).</li>
+          <li>The cyclometer shall  compute  the bicycle's current speed even when trip calculations are stopped.</li>
+        </ol>
+      </li>
+      </ol>
+	    </li>
+	    <li>The cyclometer shall display all numeric values: current speed, average speed, distance, and elapsed time.
+          <ol type="A">
+      <li>The cyclometer shall use a 4 digit 7-segment display to show numeric values.</li>
+      <li>The cyclometer shall update the display so that the current numbers are presented as bright, non-flashing, readable digits.</li>
+      <li>The cyclometer shall allow the user to see all numeric values.
+        <ol type="i">
+          <li>The cyclometer shall display current speed and average 
+speed together, with the current speed in the left two digits of the 4 
+digit display and average speed in the right two digits. The cyclometer 
+shall display speeds that are greater than or equal to 10 measurement 
+units per hour to the nearest integer measurement unit per hour. <span>The
+ cyclometer shall display speeds that are less than 10 measurement units
+ per hour to the nearest tenth of a mesurement unit per hour with a 
+decimal point between the units and tenths displays. </span></li>
+          <li>The cyclometer shall display distance to the nearest tenth
+ of a measurement unit using all four displays with a decimal point 
+separating the tenths and units digits. Distance shall display with 
+leading zeros suppressed except that a 0 shall be displayed when the 
+distance is less than one measurement unit. The tenths digit shall 
+always be displayed when displaying distance.</li>
+          <li>The cyclometer shall display elapsed time in minutes and 
+seconds with both always displayed as two digits with leading zeroes 
+shown.  A decimal point separates the minutes and seconds display.</li>
+          <li>Pressing Mode shall cause the next value to display.
+            <ol type="a">
+              <li>The cyclometer shall cycle between displays in the order: current speed/average speed, distance, elapsed time.</li>
+              <li>When the last value is displayed, pressing Mode shall cause the first value to display.</li>
+            </ol>
+          </li>
+          <li>The cyclometer shall display the last value available for 
+all numeric values. The cyclometer shall update the display if a numeric
+ value is updated while it is currently a displayed value.</li>
+        </ol>
+      </li>
+      <li>The cyclometer shall allow the user to reset the trip values.
+        <ol type="i">
+          <li>The cyclometer shall reset the trip values to 0 when the 
+Mode and Start/stop buttons are simultaneously depressed for at least 2 
+seconds.</li>
+          <li>The cyclometer shall respond to a trip values reset 
+request when it is in an operating displaying normal numeric values. The
+ cyclometer shall ignore the request during reset configuration and 
+setting of tire size from the distance display.</li>
+        </ol>
+      </li>
+      </ol>
+	    </li>
+	    <li>The cyclometer shall display wheel activity.
+	          <ol type="A">
+	            <li>The cyclometer blinks the wheel LED to indicate that 
+the wheel is rotating. The cyclometer shall blink the wheel LED at a 1 
+Hz rate (on 0.5 seconds, off 0.5 seconds) whenever wheel rotation is 
+detected.</li>
+	            <li>The cyclometer shall turn the wheel LED off when the wheel is stopped.</li>
+          </ol>
+      </li>
+	    <li>The cyclometer shall indicate the measurement unit by turning the units LED on steady for miles, and off for kilometers.</li>
+	    <li>The cyclometer shall detect user depression of the pushbuttons.
+	      <ol type="A">
+	        <li>The cyclometer shall perform operations on button 
+depression, with a suitable delay for debouncing or other delay as 
+specified in these requirements.</li>
+	        <li>The cyclometer shall recognize the simultaneous depression 
+of multiple buttons if the multiple buttons are depressed within a 200 
+msec time window started when the cyclometer detects the first button 
+depression. If this timing window requirement is met, the cyclometer 
+shall give preference to operations initiated by multiple button 
+depressions over a single button depression.</li>
+          </ol>
+	    </li>
+      </ol>
+<h3>Non-functional Requirements</h3>
+	  <ol>
+		  <li>You will implement the system in C++ under QNX running on the purplebox target systems.</li><li>The implementation will be multi-threaded.
+		  </li><li>You will create a statechart to define the behavior of the 
+cyclometer. This statechart will drive your implementation using one of 
+the three state patterns detailed in the textbook's Mechanistic Design 
+chapter. The design documentation will describe the state pattern used.
+		  </li><li>The system will use an event mechanism. The design documentation will describe the event mechanism used.
+		  </li><li>You will use the pushbuttons, 7-segment LED display, and individual LEDs on an FPGA board as your user interface.
+		  The FPGA hardware interface is defined <a href="http://www.se.rit.edu/%7Ertembed/LabInfo/FPGA-Interface/FPGA%20A2%20Pinouts.pdf">here</a>.
+		  Use the following functional assignment for the hardware: Led 0 - 
+Auto LED, Led 1 - wheel LED, Led 2 - units LED, Button 0 - Set, Button 1
+ - Start/stop, Button 2 - Mode.
+	    </li><li>You will use a <a href="http://www.se.rit.edu/%7Eswen-462/projects/final%20project/Cyclometer/Function%20Generator%20usage.jpg">function generator</a> to create wheel rotation pulses.
+        </li><li>There is a <a href="http://www.se.rit.edu/%7Eswen-462/projects/final%20project/Cyclometer/SpeedCalculation.xlsx">spreadsheet to compute speeds from pulses</a> and the other way around.
+    </li></ol>
+  <h3>Demonstrations</h3>
+	  <p>All teams will demonstrate their implementation to the instructor on the day that the project is due during finals week.</p>
+	  <h3>Submission Instructions</h3>
+	  <p>The overall project has three submissions: 1) requirements 
+analysis, 2) design, and 3) implementation artifacts and test plan. You 
+have already submitted your requirements analysis.</p>
+    <p><a name="DesignSubmission"></a>The <strong>Design submission</strong> will be a single Word or PDF file that contains the following information:</p>
+    <ol>
+	    <li>An overview of the software architecture for your cyclometer. Via discussion and diagrams, the overview should cover:
+	      <ol type="A">
+	        <li>Description of the design's software architecture above the individual class level</li>
+	        <li>Description of the tasks in your design with the inter-task relationships and approaches for synchronization</li>
+	        <li>Deployment view including connections of FPGA board and pulse generator to the system</li>
+          </ol>
+      </li>
+	    <li>Description of how calculations are performed in your design. This description should include:
+	      <ol type="A">
+	        <li>Discussion of the calculation of current speed, average speed, and distance.</li>
+	        <li>Specification  of the range of speeds your design can handle and the constraints this places on the design</li>
+	        <li>Discussion of the processing of wheel rotations signals.</li>
+	        <li>A sequence diagram triggered by wheel rotation pulses and ending with the calculations of current speed and average speed.</li>
+	        <li>A sequence diagram showing the stopping of calculations in Auto mode when the bicycle comes to a stop.</li>
+          </ol>
+	    </li>
+	    <li>Discussion of your design including the class-level design 
+including identifying the object discovery strategies used to find each 
+class in the system, and the statechart behavioral design.</li>
+    </ol>
+	  <p>Before the date specified for the Design submission in the course 
+schedule, depost this design document into the myCourses dropbox for the
+ project's Design submission. The grading rubric for this assignment is <a href="http://www.se.rit.edu/%7Eswen-462/projects/final%20project/Cyclometer/Cyclometer-DesignRubric.pdf">here</a>.</p>
+    <p><a name="ImplementationArtifacts"></a>The <strong>Implementation Artifacts and Test Plan submission</strong> will be a zip file containing:</p>
+	  <ol>
+	    <li>A Test Plan to determine if your implementation is correct. 
+Design a reasonable test plan with test sequences that adequately cover 
+the items below without requiring testing of all combinations. The 
+testing must include travel scenarios with controlled changes in speed, 
+and stops. The Test Plan should indicate expected results.
+	      <ol type="A">
+	        
+	        <li>Two different settings for wheel circumference</li>
+            <li>At least three wheel speeds across the range that your design can handle</li>
+            <li>Measurements in both metric and English units</li>
+            <li>Correct processing of manual start/stop with correct calculation of average speed, elapsed time, and distance.</li>
+            <li>Correct processing of auto start/stop with correct calculation of average speed, elapsed time, and distance.</li>
+          </ol>
+	    </li>
+	    <li>Results of  testing your implementation against  your test plan.</li>
+	    <li>As part of the Test Plan document, include a section that 
+describes either: 1) changes in the design that you made during the last
+ phases, i.e. since the design submission of the project, along with the
+ reasons you made those changes, 2) changes you would make in the design
+ if you did the project over along with why you think this would make a 
+better design.</li>
+	    <li>A directory named <strong><code>code</code></strong> that holds your project's source code tree. </li>
+    </ol>
+<p>Before the date specified for the final submission, deposit this zip 
+file into the myCourses dropbox for the project's Implementation 
+Artifacts submission. The grading rubric for this assignment is <a href="http://www.se.rit.edu/%7Eswen-462/projects/final%20project/Cyclometer/CyclometerRubric.pdf">here</a>.</p>
+  <h3>Advice from the Trenches</h3>
+	  <ul>
+	    <li>Do not procrastinate on this project. This project can not be completed by  putting in a long weekend just before it is due.</li>
+	    <li>Conceptually this is a simple project--count pulses, display 
+the results of a few simple calculations, throw on a pushbutton 
+interface. The project is deceptively more complex than that.</li>
+	    <li>There are several clearly identified subcomponents in this 
+project. You will need to have each of you working independently on 
+different subcomponents with once or twice a week integration. An 
+approach where you will only work on it together a couple of hours a 
+week has been tried and has failed.</li>
+    </ul>
+<hr>
+	  <address>
+	  $Id: Cyclometer-implementation.html 179 2013-01-23 21:23:21Z jrv $
+</address>
+	
+
+</body></html>
