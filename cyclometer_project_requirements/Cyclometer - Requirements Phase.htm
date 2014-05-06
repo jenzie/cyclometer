@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+		<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+		<meta name="generator" content="Adobe GoLive">
+		<title>Cyclometer - Requirements Phase</title>
+		<link href="Cyclometer%20-%20Requirements%20Phase_files/basic.htm" rel="stylesheet" type="text/css" media="all">
+	</head>
+
+	<body bgcolor="#ffffff">
+<div align="center">
+			<h1>Cyclometer Project - Requirements Analysis</h1>
+		</div>
+			<h3>Introduction</h3>
+			<p>Your team is responsible for designing and implementing a 
+cyclometer, also called a bicycle computer. Pictured below is a typical 
+cyclometer.</p>
+			<p align="center"><img src="Cyclometer%20-%20Requirements%20Phase_files/velo5.jpg" alt="" border="0" width="277" height="380"></p>
+			<p>The cyclometer uses a magnetic sensor on one of the bicycle's 
+wheels to generate a pulse once per wheel revolution. These pulses are 
+counted to compute the speed of the bicycle and a number of other  
+related quantities.</p>
+			<p>This assignment has you defining requirements for this typical cyclometer. You can use the <a href="http://www.se.rit.edu/%7Eswen-462/projects/final%20project/Cyclometer/velo5-manual.pdf">instruction manual for the cyclometer pictured above</a> to help you identify the use cases for a generic cyclometer. <img src="Cyclometer%20-%20Requirements%20Phase_files/new.htm" alt="New" width="32" height="16"><span class="NewText">Use the Velo 5 feature set with the addtion of the calculation of elapsed time and average speed.</span>
+ (Note: when you begin the design and implementation phase of this 
+project, you will receive a set of requirements, which will ensure  that
+ all teams   work to the same requirements.) Based on the use cases that
+ you identify, define a consistent set of well-formed requirements 
+statements that cover all the features in this cyclometer. Keep alert to
+ capture any structure that exists in the requirements by having a 
+hierarchy of requirements. Most requirements statements will be of the 
+form: "The cyclometer shall ..."</p>
+<h3>Requirements Analysis</h3>
+			<p>Analyze the requirements for this cyclometer. This analysis should include activities which:</p>
+            <ul>
+              <li>Identify actors external to the system.</li>
+              <li>Identify use cases providing: name, goal of the use case, actor trigerring the use case</li>
+              <li>Show the interaction of actors and use cases via a Use Case diagram</li>
+              <li>Create a set of unambiguous "The cyclometer shall ..." style requirements statements for the cyclometer's features.</li>
+              <li>Identify and characterize events that the system must 
+handle, i.e. ones that cross the system boundary. Your event 
+characterization should include: event name, what the event represents, 
+actor initiating or receiving the event, timing characteristics, effect 
+of event on the system or the actor receiving it.</li>
+            </ul>
+<p>Consider the boundary for your system to be the microcontroller and 
+its memory in the cyclometer. From the microcontroller's perspective, 
+hardware elements that the microcontroller interfaces with are external 
+actors, i.e. the bicyclist is not an actor.</p>
+<h3>Timing Constraints Analysis</h3>
+            <ul>
+              <li>Specify the range of non-zero speeds that the cyclometer will display.</li>
+              <li>Given that range of speeds, specify the timing 
+constraints for performing the calculation of bicycle speed. Assume that
+ the circumfirence of the wheel which holds the magnetic sensor is 
+between 190 and 220 cm.</li>
+              <li>Describe how you will compute the bicycle's current 
+speed including how often the calculations will be performed, how oftern
+ the displayed values will be updated, and any filtering or averaging 
+you will do on the calculations.</li>
+              <li>Describe how you will compute the bicycle's average speed including <img src="Cyclometer%20-%20Requirements%20Phase_files/new.htm" alt="New" width="32" height="16"><span class="RemoveText">handling manually</span> <span class="NewText">automatically</span> turning the calculation on and off.</li>
+              <li>Describe how you will detect that the bicycle has stopped.</li>
+              <li>Specify how fast  you will scan the inputs (buttons, magnetic sensor) to your cyclometer. How did you determine those rates?</li>
+    </ul>
+    <h3>Submission Instructions</h3>
+	<p>For this assignment, you will submit two files</p>
+            <ul>
+              <li>A  document which contains the artifacts for your 
+requirements and timing constraints analyses along with a discussion of 
+all elements of the analyses. Submit this as either a Word or PDF file.</li>
+              <li>An Excel spreadsheet, which has data for, at least, 10 test points for checking the speed calculation. </li>
+            </ul>
+            <p>Submit these items in the myCourses dropbox before the date and time when the dropbox closes.</p>
+<hr>
+			<address>
+			$Id: Cyclometer-requirements.html 178 2013-01-23 20:44:15Z jrv $
+			</address>
+	
+
+</body></html>
