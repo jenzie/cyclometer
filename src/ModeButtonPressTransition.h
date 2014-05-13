@@ -10,15 +10,22 @@
 
 #include "Transition.h"
 #include "Enums.h"
+#include "StateNode.h"
+#include "CyclometerIterator.h"
 
-class ModeButtonPressTransition {
+class ModeButtonPressTransition: public Transition {
+private:
+	CyclometerIterator myItor;
 public:
 	ModeButtonPressTransition();
 	virtual ~ModeButtonPressTransition();
 
-	bool checkAccept(StateNode node, EVENT ev);
+	bool checkAccept(int stateIndex, EVENT ev);
 
-	void accept(EVENT ev);
+	void accept(int stateIndex, EVENT ev);
+
+	void setUnits(CyclometerIterator myIterator);
+
 
 	//void guard();
 

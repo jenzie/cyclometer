@@ -8,16 +8,18 @@
 #ifndef TRANSITION_H_
 #define TRANSITION_H_
 
+#include "Enums.h"
+#include "CyclometerIterator.h"
+
 class Transition {
+
 public:
-	Transition();
-	virtual ~Transition();
 
-	virtual ~ModeButtonPressTransition();
+	virtual bool checkAccept(int stateIndex, EVENT ev) = 0;
 
-	bool checkAccept();
+	virtual void accept(int stateIndex, EVENT ev) = 0;
 
-	void accept();
+	virtual void setUnits(CyclometerIterator myIterator) = 0;
 };
 
 #endif /* TRANSITION_H_ */

@@ -17,12 +17,25 @@ ModeButtonPressTransition::~ModeButtonPressTransition() {
 }
 
 // Checks the state node and event to see if the transition is possible or no.
-bool ModeButtonPressTransition::checkAccept(StateNode node, EVENT ev){
+bool ModeButtonPressTransition::checkAccept(int stateIndex, EVENT ev){
+	if( stateIndex == 0 || ev == 0){
+		return true;
+	}
+
+	return false;
 
 }
 
 // Accepts the transition, calls the state iterator entry function with the
 // state id to go to.
-void ModeButtonPressTransition::accept(StateNode node, EVENT ev){
+void ModeButtonPressTransition::accept(int stateIndex, EVENT ev){
+	if( stateIndex == 0 || ev == 0){
+		myItor.updateCurrentState(1);
+	}
 
 }
+
+void ModeButtonPressTransition::setUnits(CyclometerIterator myIterator){
+	this->myItor = myIterator;
+}
+

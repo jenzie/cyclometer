@@ -7,11 +7,3 @@
 
 #include "Transition.h"
 
-Transition::Transition() {
-	// TODO Auto-generated constructor stub
-
-}
-
-Transition::~Transition() {
-	// TODO Auto-generated destructor stub
-}
