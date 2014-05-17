@@ -6,9 +6,10 @@
  */
 
 #include "CyclometerIterator.h"
+std::vector<StateNode*> states;
+int currentState;
 
 CyclometerIterator::CyclometerIterator() {
-	// TODO Auto-generated constructor stub
 
 }
 
@@ -20,18 +21,19 @@ CyclometerIterator::~CyclometerIterator() {
 
 void CyclometerIterator::addState(StateNode* node){
 	printf(" adding %d \n", node->getID());
-	this->states.push_back(node);
-	printf(" stop ");
+	states.push_back(node);
 
 }
 
 void CyclometerIterator::updateCurrentState(int stateID){
 	printf("update state on itor \n");
-	this->currentState = stateID;
-	printf("the current state is %d \n ", stateID);
+	currentState = stateID;
+	CyclometerIterator::enterState(currentState);
+	printf("the current state is %d \n ", currentState);
 }
 
 void CyclometerIterator::accept(EVENT a){
+	printf("real state %d \n", currentState);
 	printf("state %d \n", (StateNode*)(states.at(currentState))->getID());
 	//printf("state %d \n", states.at(currentState)->getID());
 	printf("state size %d \n", states.size());
@@ -39,4 +41,8 @@ void CyclometerIterator::accept(EVENT a){
 	//printf("state %d", states.at(1)->getID());
 	//printf("state %d", states[currentState]->getID());
 	states.at(currentState)->accept(a);
+}
+
+void CyclometerIterator::enterState(int stateID){
+	states.at(stateID)->entry();
 }

@@ -24,7 +24,7 @@ public:
 	virtual void is_in()= 0;
 	virtual void accept(EVENT a)= 0;
 	virtual int getID() =0 ;
-	virtual void setUnits(int iD, void(*callbackfunc)(int),void (*callbackfunc2)(int)) =0;
+	//virtual void setUnits(int iD, void(*callbackfunc)(int),void (*callbackfunc2)(int)) =0;
 };
 
 #endif /* STATENODE_H_ */

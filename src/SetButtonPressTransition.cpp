@@ -18,7 +18,7 @@ SetButtonPressTransition::~SetButtonPressTransition() {
 
 // Checks the state node and event to see if the transition is possible or no.
 bool SetButtonPressTransition::checkAccept(int stateIndex, EVENT ev){
-
+	return false;
 }
 
 // Accepts the transition, calls the state iterator entry function with the

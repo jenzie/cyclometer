@@ -11,8 +11,9 @@
 #include "ModeButtonPressTransition.h"
 #include "SetButtonPressTransition.h"
 #include "SetUnitsState.h"
+#include "SetCircumference.h"
 #include "CyclometerIterator.h"
-#include "CyclometerIterator.h"
+#include "CalculationState.h"
 #include "StateNode.h"
 #include "Enums.h"
 #include <stdlib.h>
@@ -34,14 +35,18 @@ private:
 	SetButtonPressTransition setButton;
     pthread_t io;
     SetUnitsState setUnitsKMKH;
-    SetUnitsState setUnitsDistance;
+	SetCircumference setUnitsDistance;
+	CalculationState calculateState;
     ModeButtonPressTransition modeButton;
+
+
 
 public:
 	void* runProcess(void);
 	CyclometerContext(CyclometerIterator myIterator);
 	virtual ~CyclometerContext();
 	virtual void accept(EVENT e);
+
 
 
 };

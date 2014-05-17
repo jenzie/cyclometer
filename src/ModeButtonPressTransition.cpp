@@ -18,7 +18,21 @@ ModeButtonPressTransition::~ModeButtonPressTransition() {
 
 // Checks the state node and event to see if the transition is possible or no.
 bool ModeButtonPressTransition::checkAccept(int stateIndex, EVENT ev){
-	if( stateIndex == 0 || ev == 0){
+	if (stateIndex == 0 && ev == MODEBUTTONPRESS){
+		return true;
+	}
+	else if (stateIndex == 0 && ev == SETBUTTONPRESS){
+		return true;
+	}
+
+	else if (stateIndex == 1 && ev == MODEBUTTONPRESS){
+		return true;
+	}
+	else if (stateIndex == 1 && ev == MODEBUTTONHOLD){
+		return true;
+	}
+
+	else if (stateIndex == 1 && ev == SETBUTTONPRESS){
 		return true;
 	}
 
@@ -29,8 +43,22 @@ bool ModeButtonPressTransition::checkAccept(int stateIndex, EVENT ev){
 // Accepts the transition, calls the state iterator entry function with the
 // state id to go to.
 void ModeButtonPressTransition::accept(int stateIndex, EVENT ev){
-	if( stateIndex == 0 || ev == 0){
+	if (stateIndex == 0 && ev == MODEBUTTONPRESS){
+		//printf("wrong 1 one %d \n",stateIndex);
+		//printf("wrong 1 one \n");
+		myItor.updateCurrentState(0);
+	}
+	else if (stateIndex == 0 && ev == SETBUTTONPRESS){
+		//printf("wrong 2 one \n");
 		myItor.updateCurrentState(1);
+	}
+	else if (stateIndex == 1 && ev == MODEBUTTONPRESS){
+		//printf("correct one \n");
+		myItor.updateCurrentState(1);
+	}
+	else if (stateIndex == 1 && ev == SETBUTTONPRESS){
+		//printf("correct one \n");
+		myItor.updateCurrentState(2);
 	}
 
 }

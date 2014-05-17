@@ -19,16 +19,20 @@
 #include <iostream>
 #include <pthread.h>
 #include <vector>
+#include <exception>
+
 
 class SetUnitsState: public StateNode{
 private:
 	int myID;
 	std::vector<Transition*> transVector;
+	bool display;
+	bool khm;
 
 public:
 	int getID();
 	void (*createCallback)(int);
-	void (*createCallback2)(int);
+	void (*createCallback2)(bool);
 	SetUnitsState();
 	virtual ~SetUnitsState();
 	void enter();
@@ -38,7 +42,8 @@ public:
 	void is_in();
 	void accept(EVENT e);
 	void addTransition(Transition* t);
-	void setUnits(int iD, void(*callbackfunc)(int),void (*callbackfunc2)(int));
+	virtual void setUnits(int iD, void(*callbackfunc)(int),void (*callbackfunc2)(bool));
+	//virtual void* runProcess(void);
 };
 
 #endif /* SETUNITSSTATE_H_ */

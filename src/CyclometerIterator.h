@@ -20,8 +20,7 @@
 
 class CyclometerIterator {
 private:
-	std::vector<StateNode*> states;
-	int currentState;
+	
 	int prevState;
 
 
@@ -33,6 +32,7 @@ public:
 	virtual void addState(StateNode* node);
 	virtual void updateCurrentState(int stateID);
 	virtual void accept(EVENT a);
+	virtual void enterState(int stateID);
 };
 
 #endif /* CYCLOMETERITERATOR_H_ */
