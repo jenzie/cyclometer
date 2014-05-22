@@ -3,6 +3,7 @@
  *
  *  Created on: May 15, 2014
  *      Author: nmc2484
+ * 		Author: Jenny Zhen
  */
 
 #ifndef CALCULATIONSTATE_H_
@@ -10,7 +11,9 @@
 
 #include "StateNode.h"
 #include "ModeButtonPressTransition.h"
-#include "SetButtonPressTransition.h"
+#include "DisplaySpeed.h"
+#include "DisplayTime.h"
+#include "DisplayDistance.h"
 #include "Transition.h"
 #include "Enums.h"
 #include <stdlib.h>
@@ -41,12 +44,19 @@ public:
 	void accept(EVENT a);
 	virtual void setUnits(int iD, void(*callbackfunc)(int),void (*callbackfunc2)(int),int (*callbackfunc3)(void),bool (*callbackfunc4)(void));
 
-	virtual void* runProcessDistance(void);
+	virtual void modeSwitch(int switcher);
+
 	virtual void* runProcessTime(void);
 	virtual void* runProcessSpeed(void);
 	virtual void* runCProcess(void);
+	virtual void* blinkLED(void);
+	virtual void* cycleLED(void);
+	//virtual void* runProcessDisplaySpeed(void);
+	//virtual void* runProcessDisplayTime(void);
+	//virtual void* runProcessDisplayDistance(void);
 
 	void addTransition(Transition* e);
+	virtual void resetValues();
 };
 
 #endif /* CALCULATIONSTATE_H_ */

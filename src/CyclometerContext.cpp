@@ -3,6 +3,7 @@
  *
  *  Created on: May 8, 2014
  *      Author: nmc2484
+ * 		Author: Jenny Zhen
  */
 
 #include "CyclometerContext.h"
@@ -77,9 +78,8 @@ CyclometerContext::CyclometerContext(CyclometerIterator myIterator) {
 
 	modeButton.setUnits(myIterator);
 	setUnitsKMKH.setUnits(0,entryAction, exitActionSetUnits);
-	setUnitsDistance.setUnits(1,entryAction, exitActionSetCirc);
+	setUnitsDistance.setUnits(1,entryAction, exitActionSetCirc, getKHM);
 	calculateState.setUnits(2,entryAction, exitAction, getCirc, getKHM);
-	this->setButton= SetButtonPressTransition();
 	this->theIterator = myIterator;
 	setUnitsKMKH.addTransition(&modeButton);
 	setUnitsDistance.addTransition(&modeButton);

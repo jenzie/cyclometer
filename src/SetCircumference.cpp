@@ -1,9 +1,19 @@
+/*
+ * SetCircumference.cpp
+ *
+ *  Created on: May 8, 2014
+ *      Author: nmc2484
+ * 		Author: Jenny Zhen
+ */
+
 #include "SetCircumference.h"
 #include <unistd.h>
 #include <stdint.h>
 #include <sys/mman.h>
 #include <sys/neutrino.h>
 #include <hw/inout.h>
+#include <time.h>
+#include <signal.h>
 pthread_t scio;
 #define IO_PORT_SIZE 1
 #define CTRLSCB_ADDRESS 0x289
@@ -58,10 +68,23 @@ int middleCircumference=8;
 int rightCricumference=9;
 int theCircumference=190;
 
+int ykhm  =0b01111111;
+
+int nokhm =0b11111111;
+
+int *khmpointer = &ykhm;
 
 
 
-bool displayC;
+
+
+volatile bool displayC;
+volatile bool exitDisplay = false;
+
+int state = 1;
+int *status = &state;
+
+bool khms;
 
 
 
@@ -72,7 +95,7 @@ void* circumferenceHelper(void* args){
 
 SetCircumference::SetCircumference()
 {
-	pthread_create(&scio, NULL, &circumferenceHelper, this);
+
 }
 
 
@@ -97,6 +120,8 @@ void SetCircumference::display(){
 }
 
 
+
+
 void* SetCircumference::runProcessCircumference(void){
 		//printf("the number %d",circumferences.at(rightCricumference));
 	if ( ThreadCtl(_NTO_TCTL_IO, NULL) == -1)
@@ -107,45 +132,33 @@ void* SetCircumference::runProcessCircumference(void){
 			}
 		ctrlSCBHandle = mmap_device_io(IO_PORT_SIZE, CTRLSCB_ADDRESS);
 		ctrlSCAHandle = mmap_device_io(IO_PORT_SIZE, CTRLSCA_ADDRESS);
+		struct timespec tim;
+		tim.tv_sec = 0;
+		tim.tv_nsec = 100;
 		while(true){
-			if(displayC){
-				//printf("the number \n");
-
-				//sCmask = in8(ctrlSCAHandle);
-				//sCmask = sCmask | RESET_MASK;
-				//sCmask = sCmask & SHOW_RIGHT_MASK;
-				//display(SHOW_RIGHT_MASK,rightCricumference);
-				out8(ctrlSCAHandle, SHOW_RIGHT_MASK);
-				out8(ctrlSCBHandle, *circs[rightCricumference]);
-
-				usleep(1);
-				//sCmask = in8(ctrlSCAHandle);
-				//sCmask = sCmask | RESET_MASK;
-				//sCmask = sCmask & SHOW_MID_MASK;
-				//display(SHOW_MID_MASK,middleCircumference);
-				out8(ctrlSCAHandle, SHOW_MID_MASK);
-				out8(ctrlSCBHandle, *circs[middleCircumference]);
-				usleep(1);
-
-				//sCmask = in8(ctrlSCAHandle);
-				//sCmask = sCmask | RESET_MASK;
-				//sCmask = sCmask & SHOW_LEFT_MASK;
-				//display(SHOW_LEFT_MASK,leftCircumference);
-				out8(ctrlSCAHandle, SHOW_LEFT_MASK);
-				out8(ctrlSCBHandle, *circs[leftCircumference]);
-				usleep(1);
-
-			}else{
-				//printf("sleeping \n");
-				sleep(.5);
+		while(displayC==true){
+			nanosleep(&tim, NULL);
+			//usleep(10);
+			out8(ctrlSCAHandle, SHOW_RIGHT_MASK & *khmpointer );
+			out8(ctrlSCBHandle, *circs[rightCricumference]);
+			nanosleep(&tim, NULL);
+			//usleep(10);
+			out8(ctrlSCAHandle, SHOW_MID_MASK & *khmpointer );
+			out8(ctrlSCBHandle, *circs[middleCircumference]);
+			nanosleep(&tim, NULL);
+			//usleep(10);
+			out8(ctrlSCAHandle, SHOW_LEFT_MASK & *khmpointer );
+			out8(ctrlSCBHandle, *circs[leftCircumference]);
 			}
 		}
 		return NULL;
 }
 
-void SetCircumference::setUnits(int iD, void(*callbackfunc)(int), void(*callbackfunc2)(int)){
+void SetCircumference::setUnits(int iD, void(*callbackfunc)(int), void(*callbackfunc2)(int),bool (*callbackfunc3)(void)){
 	this->createCallback = callbackfunc;
 	this->createCallback2 = callbackfunc2;
+	this->createCallback3 = callbackfunc3;
+
 	this->myID = iD;
 
 
@@ -156,10 +169,20 @@ void SetCircumference::entry(){
 	//printf("the number %u \n", circs[0]);
 	printf("entering the set circ \n");
 	createCallback(myID);
+	khms = createCallback3();
+	if(khms){
+		khmpointer = &ykhm;
+	}else{
+		khmpointer = &nokhm;
+	}
 	//printf("entered the setUnits state");
+	//pthread_create(&scio, NULL, &circumferenceHelper, this);
+	pthread_create(&scio, NULL, &circumferenceHelper, this);
 	doThis();
 }
+
 void SetCircumference::exit(){
+	pthread_cancel(scio);
 	displayC = false;
 	printf("the seleceted circ is %d \n",theCircumference-1);
 	createCallback2(theCircumference-1);
@@ -202,14 +225,7 @@ void SetCircumference::doThis(){
 
 void SetCircumference::is_in(){}
 void SetCircumference::accept(EVENT e){
-	if (e == MODEBUTTONHOLD){
-		//TODO DO THE EVERY SECOND THINGS
-	}
-	else if (e == MODEBUTTONHOLDUP){
-		//Stop updating once every second
-	}
-	
-	else if (transVector[0]->checkAccept(myID, e)){
+	if (transVector[0]->checkAccept(myID, e)){
 		printf("HIT %d \n ", e);
 		exit();
 		transVector[0]->accept(myID, e);

@@ -3,6 +3,7 @@
  *
  *  Created on: May 8, 2014
  *      Author: nmc2484
+ * 		Author: Jenny Zhen
  */
 
 #ifndef SETBUTTONPRESSTRANSITION_H_

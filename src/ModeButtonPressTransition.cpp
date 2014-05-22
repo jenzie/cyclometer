@@ -3,6 +3,7 @@
  *
  *  Created on: May 6, 2014
  *      Author: nmc2484
+ * 		Author: Jenny Zhen
  */
 
 #include "ModeButtonPressTransition.h"
@@ -18,7 +19,10 @@ ModeButtonPressTransition::~ModeButtonPressTransition() {
 
 // Checks the state node and event to see if the transition is possible or no.
 bool ModeButtonPressTransition::checkAccept(int stateIndex, EVENT ev){
-	if (stateIndex == 0 && ev == MODEBUTTONPRESS){
+	if(ev == SETSTARTSTOPMODEBUTTONPRESS){
+		return true;
+	}
+	else if (stateIndex == 0 && ev == MODEBUTTONPRESS){
 		return true;
 	}
 	else if (stateIndex == 0 && ev == SETBUTTONPRESS){
@@ -28,11 +32,16 @@ bool ModeButtonPressTransition::checkAccept(int stateIndex, EVENT ev){
 	else if (stateIndex == 1 && ev == MODEBUTTONPRESS){
 		return true;
 	}
-	else if (stateIndex == 1 && ev == MODEBUTTONHOLD){
+	else if (stateIndex == 1 && ev == SETBUTTONPRESS){
 		return true;
 	}
-
-	else if (stateIndex == 1 && ev == SETBUTTONPRESS){
+	else if (stateIndex == 2 && ev == MODEBUTTONPRESS){
+		return true;
+	}
+	else if (stateIndex == 2 && ev == SETBUTTONPRESS){
+		return true;
+	}
+	else if (stateIndex == 2 && ev == STARTSTOPANDMODEBUTTONPRESS){
 		return true;
 	}
 
@@ -43,7 +52,10 @@ bool ModeButtonPressTransition::checkAccept(int stateIndex, EVENT ev){
 // Accepts the transition, calls the state iterator entry function with the
 // state id to go to.
 void ModeButtonPressTransition::accept(int stateIndex, EVENT ev){
-	if (stateIndex == 0 && ev == MODEBUTTONPRESS){
+	if (ev == SETSTARTSTOPMODEBUTTONPRESS ){
+		myItor.updateCurrentState(0);
+	}
+	else if (stateIndex == 0 && ev == MODEBUTTONPRESS){
 		//printf("wrong 1 one %d \n",stateIndex);
 		//printf("wrong 1 one \n");
 		myItor.updateCurrentState(0);
@@ -57,6 +69,18 @@ void ModeButtonPressTransition::accept(int stateIndex, EVENT ev){
 		myItor.updateCurrentState(1);
 	}
 	else if (stateIndex == 1 && ev == SETBUTTONPRESS){
+		//printf("correct one \n");
+		myItor.updateCurrentState(2);
+	}
+	else if (stateIndex == 2 && ev == MODEBUTTONPRESS){
+		//printf("correct one \n");
+		myItor.updateCurrentState(2);
+	}
+	else if (stateIndex == 2 && ev == SETBUTTONPRESS){
+		//printf("correct one \n");
+		myItor.updateCurrentState(1);
+	}
+	else if (stateIndex == 2 && ev == STARTSTOPANDMODEBUTTONPRESS){
 		//printf("correct one \n");
 		myItor.updateCurrentState(2);
 	}

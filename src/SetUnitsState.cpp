@@ -3,6 +3,7 @@
  *
  *  Created on: May 12, 2014
  *      Author: nmc2484
+ * 		Author: Jenny Zhen
  */
 
 #include "SetUnitsState.h"
@@ -17,9 +18,9 @@ pthread_t io;
 #define CTRLSA_ADDRESS 0x28a
 #define ONE_MASK 0b11111001
 #define TWO_MASK 0b10100100
-#define SHOW_MASK 0b11111110
-#define SHOW_REST_MASK  0b11110000
-#define MY_DISPLAY_MASK 0b00001111
+#define SHOW_MASK       0b01111110
+#define SHOW_MASK_TWO   0b11111110
+
 
 uintptr_t ctrlSBHandle;
 uintptr_t ctrlSAHandle;
@@ -70,6 +71,7 @@ void SetUnitsState::doThis(){
 		//mask = in8(ctrlSAHandle);
 		//mask = mask | SHOW_REST_MASK;
 		//mask = mask & SHOW_MASK;
+		//in8(ctrlSAHandle);
 		out8(ctrlSAHandle, SHOW_MASK);
 		out8(ctrlSBHandle, ONE_MASK);
 
@@ -79,7 +81,7 @@ void SetUnitsState::doThis(){
 		//mask = in8(ctrlSAHandle);
 		//mask = mask | SHOW_REST_MASK;
 		//mask = mask & SHOW_MASK;
-		out8(ctrlSAHandle, SHOW_MASK);
+		out8(ctrlSAHandle, SHOW_MASK_TWO);
 		out8(ctrlSBHandle, TWO_MASK);}
 }
 

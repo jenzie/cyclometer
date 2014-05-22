@@ -3,13 +3,14 @@
  *
  *  Created on: May 8, 2014
  *      Author: nmc2484
+ * 		Author: Jenny Zhen
  */
 
 #ifndef CYCLOMETERCONTEXT_H_
 #define CYCLOMETERCONTEXT_H_
 
 #include "ModeButtonPressTransition.h"
-#include "SetButtonPressTransition.h"
+
 #include "SetUnitsState.h"
 #include "SetCircumference.h"
 #include "CyclometerIterator.h"
@@ -32,7 +33,6 @@
 class CyclometerContext {
 private:
 	CyclometerIterator theIterator;
-	SetButtonPressTransition setButton;
     pthread_t io;
     SetUnitsState setUnitsKMKH;
 	SetCircumference setUnitsDistance;

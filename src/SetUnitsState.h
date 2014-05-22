@@ -3,6 +3,7 @@
  *
  *  Created on: May 12, 2014
  *      Author: nmc2484
+ * 		Author: Jenny Zhen
  */
 
 #ifndef SETUNITSSTATE_H_
@@ -11,7 +12,7 @@
 #include "StateNode.h"
 #include "SetUnitsState.h"
 #include "ModeButtonPressTransition.h"
-#include "SetButtonPressTransition.h"
+
 #include "Transition.h"
 #include "Enums.h"
 #include <stdlib.h>
@@ -28,6 +29,7 @@ private:
 	std::vector<Transition*> transVector;
 	bool display;
 	bool khm;
+
 
 public:
 	int getID();

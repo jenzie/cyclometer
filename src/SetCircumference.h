@@ -1,3 +1,11 @@
+/*
+ * SetCircumference.h
+ *
+ *  Created on: May 8, 2014
+ *      Author: nmc2484
+ * 		Author: Jenny Zhen
+ */
+
 #pragma once
 
 #ifndef SETCIRCUMFERENCE_H_
@@ -6,7 +14,7 @@
 
 
 #include "ModeButtonPressTransition.h"
-#include "SetButtonPressTransition.h"
+
 #include "Transition.h"
 #include "Enums.h"
 #include <stdlib.h>
@@ -27,6 +35,7 @@ public:
 	int getID();
 	void(*createCallback)(int);
 	void(*createCallback2)(int);
+	bool(*createCallback3)(void);
 	SetCircumference();
 	~SetCircumference();
 	void enter();
@@ -38,7 +47,7 @@ public:
 	virtual void* runProcessCircumference(void);
 	void addTransition(Transition* t);
 	virtual void display();
-	virtual void setUnits(int iD, void(*callbackfunc)(int), void(*callbackfunc2)(int));
+	virtual void setUnits(int iD, void(*callbackfunc)(int), void(*callbackfunc2)(int),bool (*callbackfunc3)(void));
 };
 
 
